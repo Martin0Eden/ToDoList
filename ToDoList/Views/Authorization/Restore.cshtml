@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+@model Users
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> ToDoList</title>
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/login.css">
+</head>
+<body>
+    <main>
+        <section class="authorization">
+            <form asp-action="RestorePass" asp-controller="Authorization" method="post" class="form">
+                <div class="card">
+                    <a class="login">Востановление пароля</a>
+                    <div class="inputBox">
+                        <input asp-for="Email" type="email" required="required">
+                        <span>Почта</span>
+                    </div>
+
+                    <a href="/Authorization/Login">Назад</a>
+
+                    <button class="enter">Востановить</button>
+
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
+

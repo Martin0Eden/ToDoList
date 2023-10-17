@@ -1,0 +1,153 @@
+﻿@using ToDoList.Models.ViewClass
+@using ToDoList.Models.DataClass
+
+@{
+    Layout = null;
+}
+
+@model TaskClass
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> ToDoList</title>
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/task.css">
+    
+</head>
+<body>
+    <main>
+        @{
+            bool intask = false;
+            foreach(var user in Model.listuser)
+            {
+                if(user.UserId==Model.Users.UserId)
+                {
+                    intask = true;
+                }
+            }
+        }
+        <img id="@Model.Users.UserId" src="/img/comment.png" class="comment">
+        <section id="@Model.Task.TaskId" class="info">
+            <div class="headtask">
+                <h1>@Model.Task.Name</h1>
+                <label class="container">
+                    @{
+                        if(Model.Task.Status!="false")
+                        {
+                            <input id="@Model.Task.TaskId" checked="checked" type="checkbox">
+                        }
+                        else
+                        {
+                            <input id="@Model.Task.TaskId" type="checkbox">
+                        }
+
+                    }
+                    
+                    <div class="checkmark"></div>
+                </label>
+            </div>
+            <h3 class="desc">@Model.Task.Description</h3>
+            <div class="filecontainer">
+                
+                    <div class="newFile">
+                    @{
+                    foreach (var file in Model.FileUpload)
+                    {
+                        <div class="file">
+                                <img id="@file.FileId" class="corner-img" src="~/img/removefile.png" />
+                                
+                                @{
+                                    <a href="~/Files/@file.FileName" target="_blank">
+                                @switch(file.FileExtension)
+                                {
+                                    case ".docx":
+                                        {
+                                            <img  class="fileimg" src="~/img/fileimg/wordimg.png" />
+                                            break;
+                                        }
+                                    case ".xlsx":
+                                        {
+                                            <img class="fileimg" src="~/img/fileimg/exelimg.png" />
+                                            break;
+                                        }
+                                    case ".pptx":
+                                        {
+                                            <img class="fileimg" src="~/img/fileimg/pwpimg.png" />
+                                            break;
+                                        }
+                                    case ".pdf":
+                                        {
+                                            <img class="fileimg" src="~/img/fileimg/pdfimg.png" />
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            <img class="fileimg" src="~/img/fileimg/other.png" />
+                                            break;
+                                        }
+                                }
+                                    </a>
+                                }
+                                
+                            
+                            <h3>@file.FileName</h3>
+                        </div>
+                    }
+                    }
+                    </div>
+                    @{
+                        if ((Model.Users.Role != "R3" && intask) || Model.Users.Role == "R1")
+                        {
+                            <form id="@Model.Task.TaskId" class="addfile" method="post" enctype="multipart/form-data">
+                                <input asp-for="NewFileUpload.FileToUpload" type="file" class="inputfile">
+                                <button type="submit">Загрузить</button>
+                            </form>
+                        }
+                    }
+                    
+                
+                
+            </div>
+        </section>
+        <section class="userlist">
+            <h2>Участники Задачи</h2>
+                @{
+
+                    @using (ApplicationContext Db = new ApplicationContext())
+                    {
+                    <div class="userscroll">
+                        @foreach (var user in Model.listuser)
+                        {
+                            Role role = Db.Role.FirstOrDefault(x => x.RoleId == user.Role);
+                            <div data-taskid="@Model.Task.TaskId" class="Users">
+                                <h3>@role.Name: @user.Name</h3>
+                                @if (user.UserId != Model.Users.UserId)
+                                {
+                                    if ((Model.Users.Role != "R3" && intask) || Model.Users.Role == "R1")
+                                    {
+                                        <img id="@user.UserId" src="/img/remove.png" class="remove">
+                                    }
+                                }
+
+                            </div>
+
+                        }
+                    </div>
+                    }
+                if ((Model.Users.Role != "R3" && intask) || Model.Users.Role == "R1")
+                {
+                    <a href="#" id="Adbtn"  class="btn">Добавить</a>
+                }
+            }
+           
+        </section>
+    </main>
+    <script src="/js/UpScript/UpUserTask.js"></script>
+    <script src="/js/UpScript/TaskStasus.js"></script>
+    <script src="/js//UpScript/UpFile.js"></script>
+    <script src="/js/UpScript/comment.js"></script>
+</body>
+</html>

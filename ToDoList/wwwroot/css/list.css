@@ -1,0 +1,265 @@
+.task{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.info
+{
+  display: flex;
+  flex-direction: column;
+  min-width: 1050px;
+}
+.card {
+    width: 1200px;
+    background-color: rgb(238, 238, 238);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    margin: 15px;
+    padding: 25px 25px;
+    gap: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+  }
+
+
+.container{
+  display:flex; 
+  flex-direction: row;
+  justify-content:end;
+  gap: 20px;
+  max-width: 100px;
+
+}
+
+
+  .buttonsContainer:hover buttons{
+    filter: invert(0%);
+  }
+  
+  .buttonsContainer {
+    width: 52px;
+    height: 52px;
+    background-color: rgb(44, 44, 44);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition-duration: .3s;
+  }
+  .containerOne:hover {
+    background-color: #1fb81f;
+    transition-duration: .3s;
+  }
+  .containerTwo:hover {
+    background-color: #ee0000;
+    transition-duration: .3s;
+  }
+  
+  .buttonsContainer:active {
+    transform: scale(0.9);
+    transition-duration: .3s;
+  }
+  
+  .buttons {
+    width: 17px;
+    height: 50%;
+    filter: invert(100%);
+  }
+  
+  .buttons path {
+    fill: rgb(255, 255, 255);
+  }
+  
+  .buttonsContainer:hover .buttons {
+    animation: slide-in-top 0.3s both;
+  }
+  
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+  
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .add
+  {
+    width: 5%;
+   position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+    background-color:  rgb(238, 238, 238);
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  .role
+  {
+    width: 5%;
+   position: fixed;
+    right: 10px;
+    padding: 10px;
+    background-color:  rgb(238, 238, 238);
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  .login {
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    font-weight: bold;
+    font-size: x-large;
+    text-align: center;
+  }
+  
+  .card_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 350px;
+    width: 300px;
+    flex-direction: column;
+    gap: 25px;
+    background: #e3e3e3;
+    border-radius: 8px;
+  }
+  
+  .inputBox {
+    position: relative;
+    width: 250px;
+  }
+  
+  .inputBox input {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+    color: #000;
+    font-size: 1em;
+    background: transparent;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transition: 0.1s;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .inputBox span {
+    margin-top: 5px;
+    position: absolute;
+    left: 0;
+    transform: translateY(-4px);
+    margin-left: 10px;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 12px;
+    color: #000;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 3px;
+    border-radius: 8px;
+  }
+  
+  .inputBox input:valid~span,
+  .inputBox input:focus~span {
+    transform: translateX(113px) translateY(-15px);
+    font-size: 0.8em;
+    padding: 5px 10px;
+    background: #000;
+    letter-spacing: 0.2em;
+    color: #fff;
+    border: 2px;
+  }
+  
+  .inputBox input:valid,
+  .inputBox input:focus {
+    border: 2px solid #000;
+    border-radius: 8px;
+  }
+  
+  .enter {
+    height: 45px;
+    min-width: 100px;
+    width: auto;
+    border-radius: 5px;
+    border: 2px solid #000;
+    cursor: pointer;
+    background-color: transparent;
+    transition: 0.5s;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 1em;
+  }
+  
+  .enter:hover {
+    background-color: rgb(0, 0, 0);
+    color: white;
+  }
+  .form
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.formcontainer{
+  margin: 200px 0px;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+  
+  
+.upuser{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  height: 400px;
+  width: 650px;
+  background-color: rgb(238, 238, 238);
+  border-radius: 15px;
+}
+
+.scrollbar
+{
+  width: 550px;
+    height: 300px;
+    margin: 10px; 
+    border-radius: 15px;
+    overflow: auto; 
+    border: 1px solid #ccc;
+
+}
+.UsersUp{
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(169, 169, 169);
+  border-radius: 15px;
+}
+h3{
+  width: 430px;
+}
+
+.arrow-left{
+  width: 25px;
+  height: 25px;
+}
+.arrow-right{
+  width: 25px;
+  height: 25px;
+  transform: rotate(180deg);
+}

@@ -1,0 +1,82 @@
+CREATE DATABASE ToDoListt;
+
+
+CREATE TABLE [dbo].[Role](
+    RoleId VARCHAR(255) PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE [dbo].[Users](
+    [UserId] [nvarchar](255) NOT NULL,
+    [Name] [nvarchar](255) NULL,
+    [Password] [nvarchar](255) NULL,
+    [Email] [nvarchar](255) NULL,
+    [Role] [nvarchar](255) NULL,
+    PRIMARY KEY CLUSTERED ([UserId] ASC)
+) ON [PRIMARY];
+
+
+
+ALTER TABLE [dbo].[Users] WITH CHECK ADD FOREIGN KEY([Role])
+REFERENCES [dbo].[Role] ([RoleId]);
+
+CREATE TABLE [dbo].[Project](
+    ProjectId varchar(50) PRIMARY KEY,
+    Name varchar(50) NOT NULL,
+Description varchar(50)
+);
+
+CREATE TABLE [dbo].[Project](
+UserProjectId varchar(50) PRIMARY KEY,
+    ProjectId varchar(50),
+    UserId varchar(50),
+FOREIGN KEY (UserId) REFERENCES User(UserId),
+FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId),
+);
+
+CREATE TABLE [dbo].[Sprint](
+SprintId nvarchar(255) PRIMARY KEY,
+    ProjectId varchar(50),
+    Name nvarchar(MAX),
+Description nvarchar(MAX),
+StartDate datetime,
+EndDate datetime,
+FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId),
+);
+
+CREATE TABLE [dbo].[Task](
+TaskId nvarchar(255) PRIMARY KEY,
+SprintId nvarchar(255),
+    Name nvarchar(MAX),
+Description nvarchar(MAX),
+Status nvarchar(MAX),
+FOREIGN KEY (SprintId) REFERENCES Sprint(SprintId),
+);
+
+CREATE TABLE [dbo].[UserTask](
+UserTaskId varchar(50) PRIMARY KEY,
+TaskId nvarchar(255),
+UserId nvarchar(255),
+FOREIGN KEY (UserId) REFERENCES Users(UserId),
+FOREIGN KEY (TaskId) REFERENCES Task(TaskId)
+);
+
+CREATE TABLE [dbo].[FileUploadModel](
+FileId nvarchar(255) PRIMARY KEY,
+FileName nvarchar(MAX),
+FilePath nvarchar(MAX),
+TaskId nvarchar(255),
+FileExtension nvarchar(255),
+FOREIGN KEY (TaskId) REFERENCES Task(TaskId)
+);
+
+
+CREATE TABLE [dbo].[FileUploadModel](
+CommentId nvarchar(255) PRIMARY KEY,
+IdIn nvarchar(255),
+UserId nvarchar(255),
+Text text
+);
+
+
+

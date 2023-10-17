@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+  }
+  body {
+    max-width: 1960px;
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+    background-image: url('/img/background.png');
+    
+  }
+  html{
+    height: 100%;
+  }
+  img{
+    user-select: none;
+  }
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: inherit; 
+    text-decoration: none; 
+  }
+
+  .overlay{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(68, 68, 68, 0.168);
+    z-index: 9999;
+  }

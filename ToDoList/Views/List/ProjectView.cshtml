@@ -1,0 +1,126 @@
+﻿@using ToDoList.Models.ViewClass
+
+@{
+    Layout = null;
+}
+@model ProjectClass
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> ToDoList</title>
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/project.css">
+</head>
+<body>
+
+    <header>
+
+    </header>
+    <main>
+        @{
+            if(Model.User.Role!="R3")
+            {
+                <img src="/img/Add.png" class="add">
+            }
+        }
+
+        
+
+        <img id="@Model.User.UserId" src="/img/comment.png" class="comment">
+        <section id="@Model.Project.ProjectId" class="info">
+                <h1>@Model.Project.Name</h1>
+                <h3>@Model.Project.Description</h3>
+            @{
+                foreach(var item in Model.Spints)
+                {
+                    <div id="@item.SprintId" class="sprintlist">
+                    <div class="head">
+                            <div class="headProject">
+                                <h2>@item.Name</h2>
+                                <h3>Начало:@item.StartDate.ToString("dd.MM HH:mm"); Конец:@item.EndDate.ToString("dd.MM HH:mm");</h3>
+                                <p>@item.Description</p>
+                            </div>
+                            <img src="/img/Add.png" class="AddTask"/>
+                    </div>
+                        
+                        <div class="tasklist">
+                        @using(ApplicationContext Db = new ApplicationContext())
+                            {
+                                Model.Tasks = Db.Task.Where(x=>x.SprintId==item.SprintId).ToList();
+                                foreach(var task in Model.Tasks)
+                                {
+                                    <div class="task">
+                                        <a asp-action="Task" asp-controller="List" asp-route-iduser="@Model.User.UserId" asp-route-idtask="@task.TaskId">
+                                            <div class="taskinfo">
+                                                <h3>@task.Name</h3>
+                                                <p>@task.Description</p>
+                                            </div>
+                                        </a>
+                                        @{
+                                            if(Db.FileUploadModel.FirstOrDefault(x=>x.TaskId==task.TaskId)!=null)
+                                            {
+                                                <img class="filebool" src="/img/file.png">
+                                            }
+                                        }
+                                        
+                                        <label class="container">
+                                            @if (task.Status == "false")
+                                            {
+                                                <input id="@task.TaskId" type="checkbox">
+                                            }
+                                            else 
+                                            {
+                                                <input id="@task.TaskId" checked="checked" type="checkbox">
+                                            }
+                                            <div class="checkmark"></div>
+                                        </label>
+                                    </div>
+                                }
+                                
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </section>
+        <section class="userlist">
+            <h2>Участники проекта</h2>
+            <div class="userscroll">
+            @{
+                foreach(var item in Model.Users)
+                {
+                    <div data-id="@Model.Project.ProjectId" class="Users">
+                    @using(ApplicationContext Db = new ApplicationContext())
+                        {
+                            Role role = Db.Role.FirstOrDefault(x=>x.RoleId==item.Role);
+                            <h3>@role.Name: @item.Name</h3>
+                            @if(item.UserId!=Model.User.UserId)
+                            {
+                                <img id="@item.UserId" src="/img/remove.png" class="remove">
+                            }                        
+                        }
+                    </div>
+                }
+            }
+            
+            </div>
+            @{
+                if (Model.User.Role != "R3")
+                {
+                    <a href="#" id="Adbtn" class="btn">Добавить</a>
+                }
+            }
+        </section>
+
+    </main>
+    <script src="/js/DeleteScript/deleteuserPr.js"></script>
+    <script src="/js/UpScript/TaskStasus.js"></script>
+    <script src="/js/UpScript/UpUserProject.js" ></script>
+    <script src="/js/UpScript/comment.js"></script>
+    <script src="/js/UpScript/AddSprint.js"></script>
+    <script src="/js/UpScript/AddTask.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿@using ToDoList.Models.ViewClass
+@{
+    Layout = null;
+}
+@model ListClass
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> ToDoList</title>
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/list.css">
+    <script src="/js/reloadfile.js"></script>
+</head>
+<body>
+
+        <header>
+
+        </header>
+         <main>
+             @{
+                 if(Model.user.Role!="R3")
+                 {
+                <img src="/img/Add.png" class="add">
+                <img src="/img/user.png" class="role">
+                 }
+             }
+        <section id="@Model.user.UserId" class="task">
+            @{
+                foreach(var item in Model.project)
+                {
+                    <div class="card">
+                    <div class="info">
+                            <h2 class="cardText">@item.Name</h2>
+                            <p>@item.Description </p>
+                    </div>
+                        
+                        <div class="container">
+
+                            <div class="buttonsContainer containerOne">
+                                <a asp-action="ProjectView" asp-controller="List" asp-route-id="@item.ProjectId" asp-route-userid="@Model.user.UserId">
+                                    <img src="/img/pen.png" class="buttons">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <script src="/js/DeleteScript/deletePr.js"></script>
+                }
+                
+            }
+                
+             </section>
+
+        </main>
+        <script src="/js/UpScript/AddProject.js"></script>
+        <script src="/js//UpScript/UpUserRole.js"></script>
+</body>
+</html>
+
