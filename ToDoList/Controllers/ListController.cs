@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models;
-using ToDoList.Models.DataBase;
-using ToDoList.Models.ViewClass;
-using ToDoList.Models.DataClass;
+using System.Threading.Tasks;
+using System.Formats.Asn1;
+using Domain.Entity;
+using Service;
+using DAL;
 
 namespace ToDoList.Controllers
 {
@@ -19,18 +21,15 @@ namespace ToDoList.Controllers
         public IActionResult List(Users s)
         {
             user = UserService.GetName(s.Name);
-            if(user!=null) 
+            if (user != null)
             {
-                if(user.Password==s.Password)
+                if (user.Password == s.Password)
                 {
-
                     if (user.Role == "R1")
                     {
-                        using (ApplicationContext Db = new ApplicationContext())
-                        {
-                            ListClass listClass = new ListClass(user, Db.Project.ToList());
+                            ListClass listClass = new ListClass(user, ProjectService.GetAll());
                             return View(listClass);
-                        }
+                       
                     }
                     else
                     {
@@ -39,45 +38,39 @@ namespace ToDoList.Controllers
                         ListClass listClass = new ListClass(user, projects);
                         return View(listClass);
                     }
-                        
-                    
-                }    
+
+
+                }
             }
             return RedirectToAction("Login", "Authorization");
         }
 
         public IActionResult ProjectView(string id, string userid)
         {
-            using(ApplicationContext Db = new ApplicationContext())
-            {
                 ProjectClass projectClass = new ProjectClass();
 
-                projectClass.Project = Db.Project.FirstOrDefault(x => x.ProjectId == id);
-                projectClass.User = Db.Users.FirstOrDefault(x => x.UserId == userid);
+                projectClass.Project = ProjectService.GetById(id);
+                projectClass.User = UserService.GetId(userid);
                 projectClass.Users = UserProjectService.GetUsers(id);
-                List<Sprint> sprint = Db.Sprint.Where(x=>x.ProjectId==id).ToList();
-                projectClass.Spints= sprint;
+                projectClass.Spints = SprintService.GetById(id);
+                projectClass.Tasks = TaskService.GetAll(projectClass.Spints);
 
+                projectClass.TrueFile = FileService.GetTryeFile(projectClass.Tasks);
+                
                 return View(projectClass);
-            }
+            
         }
 
         public IActionResult Task(string idtask, string iduser)
         {
-            using(ApplicationContext Db = new ApplicationContext())
-            {
                 TaskClass taskClass = new TaskClass();
-                taskClass.FileUpload = Db.FileUploadModel.Where(x=>x.TaskId==idtask).ToList();
+                taskClass.FileUpload = FileService.GetAll(idtask);
                 taskClass.Task = TaskService.Get(idtask);
                 taskClass.Users = UserService.GetId(iduser);
                 taskClass.listuser = UserTaskService.GetUsers(idtask);
                 taskClass.NewFileUpload = new FileUploadModel();
                 return View(taskClass);
-            }
-            
         }
-
-        
 
     }
 }

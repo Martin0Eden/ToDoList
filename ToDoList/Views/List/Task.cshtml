@@ -1,5 +1,4 @@
-﻿@using ToDoList.Models.ViewClass
-@using ToDoList.Models.DataClass
+﻿
 
 @{
     Layout = null;
@@ -115,15 +114,31 @@
         <section class="userlist">
             <h2>Участники Задачи</h2>
                 @{
-
-                    @using (ApplicationContext Db = new ApplicationContext())
-                    {
                     <div class="userscroll">
                         @foreach (var user in Model.listuser)
                         {
-                            Role role = Db.Role.FirstOrDefault(x => x.RoleId == user.Role);
                             <div data-taskid="@Model.Task.TaskId" class="Users">
-                                <h3>@role.Name: @user.Name</h3>
+                                @{
+                                    switch(user.Role)
+                                    {
+                                        case "R1":
+                                            {
+                                                <h3>Администратор @user.Name</h3>
+                                                break;
+                                            }
+                                        case "R2":
+                                            {
+                                                <h3>Менеджер @user.Name</h3>
+                                                break;
+                                            }
+                                        case "R3":
+                                            {
+                                                <h3>Учасник @user.Name</h3>
+                                                break;
+                                            }
+                                    }
+                                }
+                                
                                 @if (user.UserId != Model.Users.UserId)
                                 {
                                     if ((Model.Users.Role != "R3" && intask) || Model.Users.Role == "R1")
@@ -131,12 +146,10 @@
                                         <img id="@user.UserId" src="/img/remove.png" class="remove">
                                     }
                                 }
-
                             </div>
-
                         }
                     </div>
-                    }
+                    
                 if ((Model.Users.Role != "R3" && intask) || Model.Users.Role == "R1")
                 {
                     <a href="#" id="Adbtn"  class="btn">Добавить</a>

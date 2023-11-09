@@ -1,82 +1,248 @@
 CREATE DATABASE ToDoListt;
 
 
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[Role]    Script Date: 17.10.2023 15:03:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE TABLE [dbo].[Role](
-    RoleId VARCHAR(255) PRIMARY KEY,
-    Name VARCHAR(255) NOT NULL
-);
+	[RoleId] [nvarchar](255) NOT NULL,
+	[Name] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[Users]    Script Date: 17.10.2023 15:03:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 CREATE TABLE [dbo].[Users](
-    [UserId] [nvarchar](255) NOT NULL,
-    [Name] [nvarchar](255) NULL,
-    [Password] [nvarchar](255) NULL,
-    [Email] [nvarchar](255) NULL,
-    [Role] [nvarchar](255) NULL,
-    PRIMARY KEY CLUSTERED ([UserId] ASC)
-) ON [PRIMARY];
+	[UserId] [nvarchar](255) NOT NULL,
+	[Name] [nvarchar](255) NULL,
+	[Password] [nvarchar](255) NULL,
+	[Email] [nvarchar](255) NULL,
+	[Role] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD FOREIGN KEY([Role])
+REFERENCES [dbo].[Role] ([RoleId])
+GO
 
 
+USE [ToDoListt]
+GO
 
-ALTER TABLE [dbo].[Users] WITH CHECK ADD FOREIGN KEY([Role])
-REFERENCES [dbo].[Role] ([RoleId]);
+/****** Object:  Table [dbo].[Project]    Script Date: 17.10.2023 15:04:29 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 CREATE TABLE [dbo].[Project](
-    ProjectId varchar(50) PRIMARY KEY,
-    Name varchar(50) NOT NULL,
-Description varchar(50)
-);
+	[ProjectId] [varchar](50) NOT NULL,
+	[Name] [varchar](50) NULL,
+	[Description] [varchar](50) NULL,
+ CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED 
+(
+	[ProjectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 
-CREATE TABLE [dbo].[Project](
-UserProjectId varchar(50) PRIMARY KEY,
-    ProjectId varchar(50),
-    UserId varchar(50),
-FOREIGN KEY (UserId) REFERENCES User(UserId),
-FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId),
-);
+
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[UserProject]    Script Date: 17.10.2023 15:04:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[UserProject](
+	[UserProjectId] [nvarchar](255) NOT NULL,
+	[UserId] [nvarchar](255) NULL,
+	[ProjectId] [varchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserProjectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[UserProject]  WITH CHECK ADD FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Project] ([ProjectId])
+GO
+
+ALTER TABLE [dbo].[UserProject]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+
+
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[Sprint]    Script Date: 17.10.2023 15:05:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 CREATE TABLE [dbo].[Sprint](
-SprintId nvarchar(255) PRIMARY KEY,
-    ProjectId varchar(50),
-    Name nvarchar(MAX),
-Description nvarchar(MAX),
-StartDate datetime,
-EndDate datetime,
-FOREIGN KEY (ProjectId) REFERENCES Project(ProjectId),
-);
+	[SprintId] [nvarchar](255) NOT NULL,
+	[ProjectId] [varchar](50) NULL,
+	[Name] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+	[StartDate] [datetime] NULL,
+	[EndDate] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SprintId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Sprint]  WITH CHECK ADD FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Project] ([ProjectId])
+GO
+
+
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[Task]    Script Date: 17.10.2023 15:05:33 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 CREATE TABLE [dbo].[Task](
-TaskId nvarchar(255) PRIMARY KEY,
-SprintId nvarchar(255),
-    Name nvarchar(MAX),
-Description nvarchar(MAX),
-Status nvarchar(MAX),
-FOREIGN KEY (SprintId) REFERENCES Sprint(SprintId),
-);
+	[TaskId] [nvarchar](255) NOT NULL,
+	[SprintId] [nvarchar](255) NULL,
+	[Name] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+	[Status] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TaskId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Task]  WITH CHECK ADD FOREIGN KEY([SprintId])
+REFERENCES [dbo].[Sprint] ([SprintId])
+GO
+
+
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[UserTask]    Script Date: 17.10.2023 15:05:47 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 CREATE TABLE [dbo].[UserTask](
-UserTaskId varchar(50) PRIMARY KEY,
-TaskId nvarchar(255),
-UserId nvarchar(255),
-FOREIGN KEY (UserId) REFERENCES Users(UserId),
-FOREIGN KEY (TaskId) REFERENCES Task(TaskId)
-);
+	[UserTaskId] [varchar](50) NOT NULL,
+	[UserId] [nvarchar](255) NULL,
+	[TaskId] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserTaskId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[UserTask]  WITH CHECK ADD FOREIGN KEY([TaskId])
+REFERENCES [dbo].[Task] ([TaskId])
+GO
+
+ALTER TABLE [dbo].[UserTask]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+
+
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[FileUploadModel]    Script Date: 17.10.2023 15:06:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 CREATE TABLE [dbo].[FileUploadModel](
-FileId nvarchar(255) PRIMARY KEY,
-FileName nvarchar(MAX),
-FilePath nvarchar(MAX),
-TaskId nvarchar(255),
-FileExtension nvarchar(255),
-FOREIGN KEY (TaskId) REFERENCES Task(TaskId)
-);
+	[FileId] [nvarchar](255) NOT NULL,
+	[FileName] [nvarchar](max) NULL,
+	[FilePath] [nvarchar](max) NULL,
+	[TaskId] [nvarchar](255) NULL,
+	[FileExtension] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[FileId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[FileUploadModel]  WITH CHECK ADD FOREIGN KEY([TaskId])
+REFERENCES [dbo].[Task] ([TaskId])
+GO
 
 
-CREATE TABLE [dbo].[FileUploadModel](
-CommentId nvarchar(255) PRIMARY KEY,
-IdIn nvarchar(255),
-UserId nvarchar(255),
-Text text
-);
+USE [ToDoListt]
+GO
+
+/****** Object:  Table [dbo].[Comments]    Script Date: 17.10.2023 15:06:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Comments](
+	[CommentId] [varchar](255) NOT NULL,
+	[IdIn] [varchar](255) NULL,
+	[UserId] [varchar](255) NULL,
+	[Text] [text] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[CommentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+
 
 
 

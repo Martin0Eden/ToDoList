@@ -1,5 +1,4 @@
-﻿@using ToDoList.Models.ViewClass
-
+﻿
 @{
     Layout = null;
 }
@@ -26,9 +25,6 @@
                 <img src="/img/Add.png" class="add">
             }
         }
-
-        
-
         <img id="@Model.User.UserId" src="/img/comment.png" class="comment">
         <section id="@Model.Project.ProjectId" class="info">
                 <h1>@Model.Project.Name</h1>
@@ -47,10 +43,8 @@
                     </div>
                         
                         <div class="tasklist">
-                        @using(ApplicationContext Db = new ApplicationContext())
-                            {
-                                Model.Tasks = Db.Task.Where(x=>x.SprintId==item.SprintId).ToList();
-                                foreach(var task in Model.Tasks)
+                        @{
+                                foreach(var task in Model.Tasks[item.SprintId])
                                 {
                                     <div class="task">
                                         <a asp-action="Task" asp-controller="List" asp-route-iduser="@Model.User.UserId" asp-route-idtask="@task.TaskId">
@@ -60,7 +54,7 @@
                                             </div>
                                         </a>
                                         @{
-                                            if(Db.FileUploadModel.FirstOrDefault(x=>x.TaskId==task.TaskId)!=null)
+                                            if(Model.TrueFile[task.TaskId]!=null)
                                             {
                                                 <img class="filebool" src="/img/file.png">
                                             }
@@ -93,10 +87,25 @@
                 foreach(var item in Model.Users)
                 {
                     <div data-id="@Model.Project.ProjectId" class="Users">
-                    @using(ApplicationContext Db = new ApplicationContext())
-                        {
-                            Role role = Db.Role.FirstOrDefault(x=>x.RoleId==item.Role);
-                            <h3>@role.Name: @item.Name</h3>
+                    @{
+                                switch (item.Role)
+                                {
+                                    case "R1":
+                                        {
+                                            <h3>Администратор @item.Name</h3>
+                                            break;
+                                        }
+                                    case "R2":
+                                        {
+                                            <h3>Менеджер @item.Name</h3>
+                                            break;
+                                        }
+                                    case "R3":
+                                        {
+                                            <h3>Учасник @item.Name</h3>
+                                            break;
+                                        }
+                                }
                             @if(item.UserId!=Model.User.UserId)
                             {
                                 <img id="@item.UserId" src="/img/remove.png" class="remove">

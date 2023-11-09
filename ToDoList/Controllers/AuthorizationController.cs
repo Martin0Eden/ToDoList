@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Net.Mail;
 using ToDoList.Models;
-using ToDoList.Models.DataBase;
+using Domain.Entity;
+using Service;
 
 namespace ToDoList.Controllers
 {
@@ -22,7 +23,7 @@ namespace ToDoList.Controllers
 
         public IActionResult Registration()
         {
-              
+
             return View();
         }
 
